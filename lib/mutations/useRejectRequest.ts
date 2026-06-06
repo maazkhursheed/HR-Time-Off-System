@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/keys'
 import { useUIStore } from '@/store/useUIStore'
 import { rejectRequest } from '@/lib/actions/rejectRequest'
+import { broadcastStatusChange } from '@/lib/sync/timeoffChannel'
 import type { LeaveRequest } from '@/types/leave'
 
 interface RejectRequestVars {
@@ -41,6 +42,7 @@ export function useRejectRequest() {
       }
       queryClient.invalidateQueries({ queryKey: queryKeys.balance(vars.employeeId) })
       queryClient.invalidateQueries({ queryKey: queryKeys.teamBalance(vars.managerId) })
+      broadcastStatusChange(vars.employeeId, vars.managerId)
       pushToast({ variant: 'success', message: 'Request rejected.' })
     },
 

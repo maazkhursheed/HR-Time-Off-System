@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { queryKeys } from '@/lib/query/keys'
 import { useUIStore } from '@/store/useUIStore'
 import { approveRequest } from '@/lib/actions/approveRequest'
+import { broadcastStatusChange } from '@/lib/sync/timeoffChannel'
 import type { LeaveRequest } from '@/types/leave'
 
 interface ApproveRequestVars {
@@ -41,6 +42,7 @@ export function useApproveRequest() {
       }
       queryClient.invalidateQueries({ queryKey: queryKeys.teamBalance(vars.managerId) })
       queryClient.invalidateQueries({ queryKey: queryKeys.balance(vars.employeeId) })
+      broadcastStatusChange(vars.employeeId, vars.managerId)
       pushToast({ variant: 'success', message: 'Request approved.' })
     },
 
