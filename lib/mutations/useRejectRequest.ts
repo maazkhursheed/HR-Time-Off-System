@@ -40,6 +40,7 @@ export function useRejectRequest() {
         return
       }
       queryClient.invalidateQueries({ queryKey: queryKeys.balance(vars.employeeId) })
+      queryClient.invalidateQueries({ queryKey: queryKeys.teamBalance(vars.managerId) })
       pushToast({ variant: 'success', message: 'Request rejected.' })
     },
 

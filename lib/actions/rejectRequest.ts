@@ -39,6 +39,8 @@ export async function rejectRequest(
     revalidateTag(cacheTags.requests(employeeId), 'max')
     revalidateTag(cacheTags.teamRequests(managerId), 'max')
     revalidateTag(cacheTags.balance(employeeId), 'max')
+    revalidateTag(cacheTags.teamBalance(managerId), 'max')
+    revalidateTag(cacheTags.teamCalendar(managerId), 'max')
 
     return { success: true }
   } catch (err) {

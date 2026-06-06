@@ -96,6 +96,18 @@ describe('useRejectRequest — success path', () => {
     expect(toast?.message).toContain('rejected')
   })
 
+  it('invalidates teamBalance for the manager', async () => {
+    const { qc, Wrapper } = makeWrapper()
+    const spy = vi.spyOn(qc, 'invalidateQueries')
+
+    const { result } = renderHook(() => useRejectRequest(), { wrapper: Wrapper })
+    await act(async () => { result.current.mutate(VARS) })
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+    const keys = spy.mock.calls.map(([opts]) => (opts as { queryKey?: unknown[] }).queryKey?.[0])
+    expect(keys).toContain('team-balance')
+  })
+
   it('invalidates employee balance so reserved days are restored', async () => {
     const { qc, Wrapper } = makeWrapper()
     const spy = vi.spyOn(qc, 'invalidateQueries')
